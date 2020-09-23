@@ -1,0 +1,14 @@
+{
+  "name": "phaser_iso_rts",
+  "version": "1.0.0",
+  "description": "isometric rts made with phaser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "CNFloss",
+  "license": "ISC",
+  "dependencies": {
+    "phaser": "^3.24.1"
+  }
+}
