@@ -27,9 +27,8 @@ export default class UIScene extends Phaser.Scene {
             this.createActIcon();
             this.createCalculateIcon();
             this.createSplitIcon();
-            this.createArrangeButton();
+            this.createOrganizeButton();
             this.createMoveButton();
-            this.createTasksButton();
             this.createCheckboxButton();
             this.createGroupUIList();
             this.createCitizenUIList();
@@ -37,8 +36,8 @@ export default class UIScene extends Phaser.Scene {
         }.bind(this));
 
         this.gameScene.events.on("tileSelected", function(x, y) {
-            var width = this.cameras.main.width;
-            var height = this.cameras.main.height;
+            var foo = this.cameras.main.width-x;
+            var bar = this.cameras.main.height-y;
             if (this.selectedTile) {
                 this.selectedTile.destroy();
             }
@@ -62,10 +61,24 @@ export default class UIScene extends Phaser.Scene {
             });
         }.bind(this));
 
-        this.gameScene.events.on("updateFood", function(num) {
+        this.gameScene.events.on("updateFood", function(num, max) {
             var height = this.cameras.main.height;
-            this.citizenProgressBar.fillRect(162, height - 62, num*10, 28);
-            this.foodProgressBar.fillRect(26, height - 62, num*10, 28);
+            this.foodProgressBar.destroy();
+            this.foodText.destroy();
+            this.foodProgressBar = this.add.graphics();
+            this.foodProgressBar.fillStyle(0x65EA0C, 0.8);
+            this.foodProgressBar.fillRect(26, height - 62, (num*100)/max, 28);
+            this.foodText = this.add.text(40, height - 57, num + " / " + max, {fontSize: "22px", fill: "#000"});
+        }.bind(this));
+
+        this.gameScene.events.on("updateCitizenGrowth", function(num, max) {
+            var height = this.cameras.main.height;
+            this.citizenProgressBar.destroy();
+            this.citizenText.destroy();
+            this.citizenProgressBar = this.add.graphics();
+            this.citizenProgressBar.fillStyle(0x3385FF, 0.8);
+            this.citizenProgressBar.fillRect(162, height - 62, (num*100)/max, 28);
+            this.citizenText = this.add.text(176, height - 57, num + " / " + max, {fontSize: "22px", fill: "#000"});
         }.bind(this));
     }
 
@@ -82,12 +95,12 @@ export default class UIScene extends Phaser.Scene {
         this.foodProgressBoxBG.fillRect(26, height - 62, 100, 28);
         this.foodProgressBar.fillStyle(0x65EA0C, 0.8);
         this.foodProgressBar.fillRect(26, height - 62, 0, 28);
+        this.foodText = this.add.text(40, height - 57, "0 / 0", {fontSize: "22px", fill: "#000"});
     }
 
     createCitizenProgressBar() {
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
-        var value = 5;
         this.citizenProgressBox = this.add.graphics();
         this.citizenProgressBoxBG = this.add.graphics();
         this.citizenProgressBar = this.add.graphics();
@@ -97,6 +110,7 @@ export default class UIScene extends Phaser.Scene {
         this.citizenProgressBoxBG.fillRect(162, height - 62, 100, 28);
         this.citizenProgressBar.fillStyle(0x3385FF, 0.8);
         this.citizenProgressBar.fillRect(162, height - 62, 0, 28);
+        this.citizenText = this.add.text(176, height - 57, "0 / 0", {fontSize: "22px", fill: "#000"});
     }
 
     createGroupUIList() {
@@ -149,40 +163,27 @@ export default class UIScene extends Phaser.Scene {
     createSplitIcon() {
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
-        this.splitIcon = this.add.image(width/2 - 96, 32, "splitIcon");
+        this.splitIcon = this.add.image(64, height/2 - 96, "splitIcon");
         this.splitIcon.setAlpha(0.5);
-    }
-
-    createArrangeButton() {
-        var width = this.cameras.main.width;
-        var height = this.cameras.main.height;
-        
-        this.arrangeButton = this.add.sprite(width/2 -48, 32, "arrangeButton").setInteractive();
-        this.arrangeButton.setAlpha(0.5);
-        this.arrangeButton.on("pointerdown", function(pointer) {
-            this.events.emit("arrangePressed");
-        }.bind(this));
     }
 
     createMoveButton() {
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
-        
-        this.moveButton = this.add.sprite(width/2, 32, "moveButton").setInteractive();
+        this.moveButton = this.add.sprite(64, height/2 - 48, "moveGroupButton").setInteractive();
         this.moveButton.setAlpha(0.5);
         this.moveButton.on("pointerdown", function(pointer) {
             this.events.emit("movePressed");
         }.bind(this));
     }
 
-    createTasksButton() {
+    createOrganizeButton() {
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
-        
-        this.tasksButton = this.add.sprite(width/2 + 48, 32, "tasksButton").setInteractive();
-        this.tasksButton.setAlpha(0.5);
-        this.tasksButton.on("pointerdown", function(pointer) {
-            this.events.emit("tasksPressed");
+        this.organizeButton = this.add.sprite(64, height/2 + 8, "organizeGroupButton").setInteractive();
+        this.organizeButton.setAlpha(0.5);
+        this.organizeButton.on("pointerdown", function(pointer) {
+            this.events.emit("organizePressed");
         }.bind(this));
     }
 
@@ -205,9 +206,8 @@ export default class UIScene extends Phaser.Scene {
 
     updateGroupUIAlphas() {
         this.splitIcon.setAlpha((this.gameScene.selectedCitizenGroup.actions.split)/2 + 0.5);
-        this.arrangeButton.setAlpha((this.gameScene.selectedCitizenGroup.actions.arrange)/2 + 0.5);
+        this.organizeButton.setAlpha((this.gameScene.selectedCitizenGroup.actions.arrange)/2 + 0.5);
         this.moveButton.setAlpha((this.gameScene.selectedCitizenGroup.actions.move)/2 + 0.5);
-        this.tasksButton.setAlpha((this.gameScene.selectedCitizenGroup.actions.tasks)/2 + 0.5);
     }
 
     updateTurnIconAlphas() {
@@ -283,5 +283,5 @@ export default class UIScene extends Phaser.Scene {
         } else if(this[name].texture.key === type + "_icon_selected") {
             this[name].setTexture(type + "_icon");
         }
-     }
+    }
 }

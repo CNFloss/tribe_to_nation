@@ -6,12 +6,10 @@ export default class TitleScene extends Phaser.Scene {
     }
 
     create() {
-        
-    }
-
-    create() {
         this.createTitle();
         this.createPlayButton();
+        this.intro = this.sound.add("intro", {loop:true});
+        this.intro.play();
     }
 
     createTitle() {
@@ -38,6 +36,7 @@ export default class TitleScene extends Phaser.Scene {
         Phaser.Display.Align.In.Center(this.gameText, this.gameButton);
 
         this.gameButton.on("pointerdown", function(pointer) {
+            this.intro.stop();
             this.scene.start("Game");
         }.bind(this));
 
