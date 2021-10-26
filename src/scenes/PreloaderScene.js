@@ -102,11 +102,10 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image("planIcon", "./src/ui/plan_icon.png");
         this.load.image("actIcon", "./src/ui/act_icon.png");
         this.load.image("calculateIcon", "./src/ui/calculate_icon.png");
-        this.load.image("splitIcon", "./src/ui/split_icon.png");
+        this.load.image("splitIcon", "./src/ui/split_group_button.png");
         this.load.image("checkmarkIcon", "./src/ui/checkmark_icon.png");
-        this.load.image("arrangeButton", "./src/ui/arrange_button.png");
-        this.load.image("moveButton", "./src/ui/move_button.png");
-        this.load.image("tasksButton", "./src/ui/tasks_button.png");
+        this.load.image("organizeGroupButton", "./src/ui/organize_group_button.png");
+        this.load.image("moveGroupButton", "./src/ui/move_group_button.png");
         this.load.image("uncheckedboxButton", "./src/ui/uncheckedbox_button.png");
         this.load.image("checkedboxButton", "./src/ui/checkedbox_button.png");
         this.load.image("warrior_icon", "./src/ui/warrior_icon.png");
@@ -121,6 +120,7 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image("worker", "./src/sprites/worker.png");
         this.load.image("gatherer", "./src/sprites/gatherer.png");
         this.load.image("flag", "./src/sprites/purple_flag.png");
+        this.load.audio("intro", "./src/audio/anttisinstrumentals_armadaouttoatlanticv3.mp3");
         //for (var i = 0; i < 1000; i++) {
         //    this.load.image("blueButton2" + i, "./src/ui/blue_button03.png");
         //}

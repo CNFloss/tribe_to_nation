@@ -2,9 +2,12 @@ import { Physics } from "phaser";
 
 export default {
     type: Phaser.AUTO,
-    parent: "phaser-example",
-    width: 640,
-    height: 512,
+    scale: {
+      mode: Phaser.Scale.FIT,
+      parent: "phaser-example",
+      width: 640,
+      height: 512,
+    },
     pixelArt: true,
     roundPixels: true,
     physics: {
@@ -13,5 +16,8 @@ export default {
         debug: false,
         gravity: { y:0 }
       }
+    },
+    audio: {
+      disableWebAudio: true
     }
   };
